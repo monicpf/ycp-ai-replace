@@ -309,8 +309,8 @@ button:focus { outline:none; }
         <div class="dlg-wrap" id="dlgWrap">
           <div class="dlg">
             <p id="dlgMsg"></p>
-            <button class="yes" id="dlgYes">Yes, I’m sure</button>
-            <button class="no" id="dlgNo">Cancel</button>
+            <button class="yes" id="dlgNo">Continue</button>
+            <button class="no" id="dlgYes"></button>
           </div>
         </div>
       </div>
@@ -620,11 +620,11 @@ button:focus { outline:none; }
   });
   /* reference photo and prompt are mutually exclusive — confirm before switching */
   var DLG = {
-    toPhoto: 'Reference photo and prompt can’t be used together. Switching to a photo will clear your prompt.',
-    toPrompt: 'Reference photo and prompt can’t be used together. Switching to a prompt will remove your photo.'
+    toPhoto: ['You can use a reference photo or a prompt, but not both. Switching to a photo will clear your prompt.', 'Yes, switch to photo'],
+    toPrompt: ['You can use a reference photo or a prompt, but not both. Switching to a prompt will remove your photo.', 'Yes, switch to prompt']
   };
   var dlgMode = 'toPhoto';
-  function askSwitch(mode) { dlgMode = mode; $('#dlgMsg').textContent = DLG[mode]; dlgWrap.classList.add('on'); hideHint(); setTimeout(function () { step('dlgYes'); }, 50); }
+  function askSwitch(mode) { dlgMode = mode; $('#dlgMsg').textContent = DLG[mode][0]; $('#dlgYes').textContent = DLG[mode][1]; dlgWrap.classList.add('on'); hideHint(); setTimeout(function () { step('dlgYes'); }, 50); }
   $('#dlgNo').addEventListener('click', function () { dlgWrap.classList.remove('on'); step(state.ref ? 'cta' : (state.prompt ? 'ref' : 'prompt')); });
   $('#dlgYes').addEventListener('click', function () { dlgWrap.classList.remove('on'); if (dlgMode === 'toPrompt') { setRef(false); openSheet(); } else openTips(); });
   $('#tipsGo').addEventListener('click', function () { show('picker'); setTimeout(function () { step('pick'); }, 60); });
