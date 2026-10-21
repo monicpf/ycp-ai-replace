@@ -84,7 +84,8 @@ button:focus { outline:none; }
 .slider .fill { position:absolute; left:5px; top:7px; height:2px; background:var(--accent); border-radius:1px; }
 .slider .knob { position:absolute; top:.5px; width:15.4px; height:15.4px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.4); margin-left:-7.7px; }
 .inrow { padding:0 10px; display:flex; align-items:center; gap:10px; height:56px; }
-.refbox { width:56px; height:56px; border-radius:10px; overflow:hidden; position:relative; flex-shrink:0; }
+.refbox.dim, .prompt.dim { opacity:.5; }
+.refbox { transition:opacity .2s; width:56px; height:56px; border-radius:10px; overflow:hidden; position:relative; flex-shrink:0; }
 .refbox .add { position:absolute; inset:0; border-radius:10px; background:rgba(255,255,255,.15); border:.6px solid var(--border); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:2px; font-size:9px; line-height:11px; text-align:center; color:#fff; }
 .refbox .add svg { width:18px; height:18px; }
 .refbox .has { position:absolute; inset:0; display:none; }
@@ -558,6 +559,9 @@ button:focus { outline:none; }
     var ready = (!!state.prompt || state.ref) && hasMask() && !state.generated;
     cta.classList.toggle('dis', !ready && !state.generating);
     /* Figma: with a reference photo the pill reads "Replace" (no credit chip) — see ycpv6_23aireplace_3 */
+    /* photo and prompt are mutually exclusive: the unused one is shown at 50% (still tappable → switch dialog) */
+    refbox.classList.toggle('dim', !!state.prompt && !state.ref);
+    promptBtn.classList.toggle('dim', state.ref);
     ctaLab.textContent = 'Replace';
     ctaCoin.style.display = '';
   }
